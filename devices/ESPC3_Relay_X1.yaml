@@ -1,0 +1,5 @@
+# Device: Generic ESP32 DevKit board
+#
+packages:
+  <<: !include_dir_named ../components/common
+  board: !include ../boards/esp32-c3-m1i-kit.yaml

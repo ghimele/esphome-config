@@ -1,0 +1,399 @@
+esphome:
+  name: crono
+  friendly_name: Crono
+  on_boot:
+      priority: 200.0
+      then:
+        - component.update: eink_display
+        - wait_until:
+            condition:
+              lambda: 'return id(data_updated) == true;'
+              # Wait a bit longer so all the items are received
+        - delay: 10s
+        - logger.log: "Initial sensor data received: Refreshing display..."
+        - lambda: 'id(initial_data_received) = true;'
+        - script.execute: update_screen
+
+substitutions:
+  HomeName: MAM # Room Name
+  #entity_heater: input_boolean.tut_thermo_fire    ### Change for your 'Heating' Entity
+  #default_low: "20"
+  #default_hi: "28"
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+esp32_ble_tracker: 
+  scan_parameters:
+    interval: 1s 
+    
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret API_KEY
+
+ota:
+  password: !secret OTA_PASSWORD
+
+wifi:
+  ssid: !secret WIFI_SSID
+  password: !secret WIFI_PASSWORD
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "MAM-Thermostat"
+    password: "MAM-Thermostat"
+  
+  domain: .home.arpa
+  use_address: crono.home.arpa
+  #use_address: 192.168.51.10
+
+captive_portal:
+
+
+# get the font glyphs from this website
+# https://pictogrammers.com/library/mdi/
+font:
+  - file: 'fonts/Montserrat-SemiBold.ttf'
+    id: main_sensor_unit
+    size: 35
+  - file: 'fonts/Montserrat-SemiBold.ttf'
+    id: main_sensor_description
+    size: 18
+  - file: 'fonts/Montserrat-SemiBold.ttf'
+    id: footer_font
+    size: 14
+  - file: 'fonts/Montserrat-SemiBold.ttf'
+    id: header_font
+    size: 14
+  - file: 'fonts/MaterialDesignIconsDesktop.ttf'
+    id: wifi_font_20
+    size: 20
+    glyphs: [
+      # Wifi
+      "\U000F092F", # mdi-wifi-strength-outline
+      "\U000F091F", # mdi-wifi-strength-1
+      "\U000F0922", # mdi-wifi-strength-2
+      "\U000F0925", # mdi-wifi-strength-3
+      "\U000F0928", # mdi-wifi-strength-4
+      ]
+  - file: 'fonts/MaterialDesignIconsDesktop.ttf'
+    id: icon_font_40
+    size: 40
+    glyphs: [
+      "\U000F0F54", # mdi-home-thermometer
+      "\U000F18D6", # mdi-sun-thermometer
+      "\U000F18D7", # mdi-sun-thermometer-outline
+      "\U000F10C2", # mdi-thermometer-high
+      "\U000F058E", # mdi-water-percent
+      "\U000F0238", # mdi-fire
+      "\U000F0425", # mdi-power
+      ]
+
+
+switch: 
+  - platform: gpio
+    id: relay_heater
+    pin: 33
+    name: "Relay Heater"
+    restore_mode: ALWAYS_OFF
+    on_turn_on: 
+      then:
+        - lambda: id(data_updated) = true;
+    on_turn_off: 
+      then:
+        - lambda: id(data_updated) = true;
+
+climate:
+  - platform: thermostat
+    name: "${HomeName} Thermostat"
+    id: mam_thermostat
+    sensor: home_temperature
+    min_heating_off_time: 120s
+    min_heating_run_time: 120s
+    min_idle_time: 30s
+    visual:
+      min_temperature: 10
+      max_temperature: 30
+      temperature_step: 0.5
+    heat_action:
+      - switch.turn_on: relay_heater
+    idle_action:
+      - switch.turn_off: relay_heater
+    default_preset: Home
+    preset:
+      - name: Home
+        default_target_temperature_low: 22
+        mode: HEAT
+      - name: Away
+        default_target_temperature_low: 18
+        mode: HEAT
+
+button:
+  - platform: shutdown
+    name: "Display - Shutdown"
+  - platform: restart
+    name: "Display - Restart"
+  - platform: template
+    name: "Display - Refresh Screen"
+    entity_category: config
+    on_press:
+      - script.execute: update_screen
+
+# Script for updating screen - Refresh display and publish refresh count and time. (Thanks @paviro!)
+script:
+  - id: update_screen
+    then:
+      - lambda: 'id(data_updated) = false;'
+      - component.update: eink_display
+      - lambda: 'id(recorded_display_refresh) += 1;'
+      - lambda: 'id(display_last_update).publish_state(id(homeassistant_time).now().timestamp);'
+
+# Global variables for detecting if the display needs to be refreshed. (Thanks @paviro!)
+globals:
+  - id: data_updated
+    type: bool
+    restore_value: no
+    initial_value: 'false'
+  - id: initial_data_received
+    type: bool
+    restore_value: no
+    initial_value: 'false'
+  - id: recorded_display_refresh
+    type: int
+    restore_value: yes
+    initial_value: '0'
+  - id: old_temp
+    type: float
+    restore_value: no
+    initial_value: '0'
+  - id: old_humidity
+    type: float
+    restore_value: no
+    initial_value: '0'
+
+# Check whether the display needs to be refreshed every minute,
+# based on whether new data is received or motion is detected. (Thanks @paviro!)
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+    on_time:
+      - seconds: 0
+        minutes: /1
+        then:
+          - if:
+              condition:
+                lambda: 'return id(data_updated) == true;'
+              then:
+                - logger.log: "Sensor data updated: Refreshing display..."
+                - script.execute: update_screen
+              else:
+                - logger.log: "No sensors updated - skipping display refresh."
+
+sensor:
+  # Home Assistant external temperature sensor.
+  
+  - platform: homeassistant
+    name: "External Temperature"
+    entity_id: sensor.daikin_soggiorno_outside_temperature
+    id: outside_temperature
+
+  # Create sensors for monitoring the ThermostDisplay remotely.
+  - platform: template
+    name: "Display - Display Last Update"
+    device_class: timestamp
+    entity_category: "diagnostic"
+    id: display_last_update
+    
+  - platform: template
+    name: "Display - Recorded Display Refresh"
+    accuracy_decimals: 0
+    unit_of_measurement: "Refreshes"
+    state_class: "total_increasing"
+    entity_category: "diagnostic"
+    lambda: 'return id(recorded_display_refresh);'
+
+  - platform: wifi_signal
+    name: "WiFi Signal Sensor"
+    id: wifisignal
+    update_interval: 60s
+    
+  - platform: pvvx_mithermometer
+    mac_address: "A4:C1:38:19:18:BC"
+    temperature:
+      name: "HOME Temperature"
+      id: home_temperature
+      accuracy_decimals: 1
+      on_value:
+        then:
+          - logger.log:
+              format: "Value of sensor Home Temp: %.1f - Value of old Temp: %.1f, Value of data updated: %d"
+              args: ['id(home_temperature).state', 'id(old_temp)','id(data_updated)']
+          - lambda: |-
+              const double rounded_temp= static_cast<int>(id(home_temperature).state * 10 + 0.5) / 10.0;
+              const double rounded_otemp= static_cast<int>(id(old_temp) * 10 + 0.5) / 10.0;
+              ESP_LOGD("main","Rounded Value of sensor Home Temp= %f", rounded_temp);
+              if ( rounded_temp != rounded_otemp){
+                id(old_temp) = id(home_temperature).state;
+                id(data_updated) = true;
+              }
+          - logger.log:
+              format: "Value of data updated: %d"
+              args: ['id(data_updated)']
+    humidity:
+      name: "HOME Humidity"
+      id: home_humidity
+      accuracy_decimals: 0
+    battery_level:
+      name: "HOME Thermometer Battery-Level"
+    battery_voltage:
+      name: "HOME Thermometer Battery-Voltage"
+    signal_strength:
+      name: "HOME Thermometer BT Signal"
+
+  - platform: dht
+    pin: 32
+    model: AM2302
+    update_interval: 60s
+    temperature:
+      name: "Bed Room Temperature"
+      id: bedroom_temperature
+      accuracy_decimals: 1
+    humidity:
+      name: "Bed Room Humidity"
+      id: bedroom_humidity
+      accuracy_decimals: 0
+
+        
+    
+# Pins for Waveshare ePaper ESP Board
+spi:
+  clk_pin: GPIO13
+  mosi_pin: GPIO14
+
+# Now render everything on the ePaper screen.
+display:
+  - platform: waveshare_epaper
+    id: eink_display 
+    cs_pin: GPIO15
+    dc_pin: GPIO27
+    busy_pin: GPIO25
+    reset_pin: GPIO26
+    reset_duration: 200ms
+    model: 4.20in-bv2
+    #model: 4.20in
+    update_interval: never
+    lambda: |-
+
+      /* HEADER */
+      setlocale(LC_TIME, "it_IT");
+      it.strftime(10, 12, id(header_font),TextAlign::CENTER_LEFT, "%A %d %B %Y", id(homeassistant_time).now());
+      
+      /* WIFI SIGNAL */ 
+      if(id(wifisignal).has_state()) {
+        int wifi_x = 385;
+        int wifi_y = 12;
+        if (id(wifisignal).state >= -50) {
+          // Excellent
+          it.print(wifi_x, wifi_y, id(wifi_font_20), TextAlign::CENTER, "\U000F0928");
+          ESP_LOGI("WiFi", "Exellent");
+        } else if (id(wifisignal).state  >= -60) {
+          // Good
+          it.print(wifi_x, wifi_y, id(wifi_font_20), TextAlign::CENTER, "\U000F0925");
+          ESP_LOGI("WiFi", "Good");
+        } else if (id(wifisignal).state  >= -75) {
+          // Fair
+          it.print(wifi_x, wifi_y, id(wifi_font_20), TextAlign::CENTER, "\U000F0922");
+          ESP_LOGI("WiFi", "Fair");
+        } else if (id(wifisignal).state  >= -100) {
+          // Weak
+          it.print(wifi_x, wifi_y, id(wifi_font_20), TextAlign::CENTER, "\U000F091F");
+          ESP_LOGI("WiFi", "Weak");
+        } else {
+          // Unlikely working signal
+          it.print(wifi_x, wifi_y, id(wifi_font_20), TextAlign::CENTER, "\U000F092F");
+          ESP_LOGI("WiFi", "Unlikely");
+        }
+      }
+
+      it.line(0, 24, 400, 24);
+
+      /* TEXT */
+
+      /* Column 1 */
+      
+      /* Row 1 */
+      /* it.rectangle(32, 24, 84, 84); */
+      /* Thermostat status */
+      if (id(relay_heater).state){
+        it.print(32,66,id(icon_font_40), TextAlign::CENTER,"\U000F0238");
+        it.print(32,108,id(main_sensor_description), TextAlign::BOTTOM_LEFT,"Termo Accesi");
+      }
+      else{
+        it.print(32,66,id(icon_font_40), TextAlign::CENTER,"\U000F0425");
+        it.print(32,108,id(main_sensor_description), TextAlign::BOTTOM_LEFT,"Termo Spenti");
+      }
+      
+      /* Row 2 */
+      /* it.rectangle(32, 108, 84, 84); */
+      /* Home Temperature */
+      it.print(32,150,id(icon_font_40), TextAlign::CENTER,"\U000F0F54");
+      it.print(32,192,id(main_sensor_description), TextAlign::BOTTOM_LEFT,"Temp. Interna");
+
+      /* Row 3 */
+      /* it.rectangle(32, 192, 84, 84); */
+
+      /* Column 2 */
+      /* Row 1 */
+      /* Thermostat Target Temperature */
+      /* it.rectangle(116, 24, 84, 84); */
+      it.printf(54, 66, id(main_sensor_unit), TextAlign::CENTER_LEFT ,"%.1f°",id(mam_thermostat).target_temperature);
+      
+      /* Row 2 */
+      /* it.rectangle(116, 108, 84, 84); */
+      /* Home Temperature */
+      it.printf(54, 150, id(main_sensor_unit), TextAlign::CENTER_LEFT ,"%.1f°",id(home_temperature).state);
+      
+      /* Row 3 */
+      /* it.rectangle(116, 192, 84, 84); */
+
+      
+
+      /* Column 3 */
+      /* Row 1 */
+      /*it.rectangle(200, 24, 84, 84);*/
+      /* Outside Temperature */
+      it.print(200,66,id(icon_font_40), TextAlign::CENTER,"\U000F18D6");
+
+      /* Row 2 */
+      /* it.rectangle(200, 108, 84, 84); */
+      /* Home Humidity */
+      it.print(200,150,id(icon_font_40), TextAlign::CENTER,"\U000F058E");
+      it.print(200,192,id(main_sensor_description), TextAlign::BOTTOM_LEFT,"Umidita");
+      
+      /* Row 3 */
+      /* it.rectangle(200, 192, 84, 84); */
+
+      /* Column 4 */
+      /* Row 1 */
+      /*it.rectangle(284, 24, 84, 84);*/
+      /* Outside Temperature */
+      it.printf(222, 66, id(main_sensor_unit), TextAlign::CENTER_LEFT ,"%.1f°",id(outside_temperature).state);
+      it.print(222,108,id(main_sensor_description), TextAlign::BOTTOM_LEFT,"Temp. Esterna");
+
+      /* Roow 2 */
+      /* it.rectangle(284, 108, 84, 84); */
+      /* Home Humidity */
+      it.printf(222, 150, id(main_sensor_unit), TextAlign::CENTER_LEFT ,"%.0f%%",id(home_humidity).state);
+
+      /* Row 3 */
+      /* it.rectangle(284, 192, 84, 84); */
+
+      /* FOOTER */
+      it.line(0, 276, 400, 276);
+      it.strftime(355, 288 , id(footer_font), TextAlign::CENTER_RIGHT , "Updated at %d/%b/%Y %H:%M", id(homeassistant_time).now());

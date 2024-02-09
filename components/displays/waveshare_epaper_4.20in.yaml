@@ -1,0 +1,25 @@
+#### Waveshare ePaper ESP Board
+#### to be used as package 
+#### Example
+####
+#### packages:
+####  display: !include ./components/displays/waveshare_epaper_4.20in.yaml
+####
+#### End of Example
+
+spi:
+  clk_pin: "${display_clk_pin}"
+  mosi_pin: "${display_mosi_pin}"
+
+display:
+- platform: waveshare_epaper
+  id: eink_display 
+  cs_pin: "${display_cs_pin}"
+  dc_pin: "${display_dc_pin}"
+  busy_pin: "${display_busy_pin}"
+  reset_pin: "${display_reset_pin}"
+  reset_duration: 200ms
+  model: 4.20in-bv2
+  update_interval: never
+
+

@@ -1,0 +1,37 @@
+# get the font glyphs from this website
+# https://pictogrammers.com/library/mdi/
+- file: 'fonts/Montserrat-SemiBold.ttf'
+  id: main_sensor_unit
+  size: 35
+- file: 'fonts/Montserrat-SemiBold.ttf'
+  id: main_sensor_description
+  size: 18
+- file: 'fonts/Montserrat-SemiBold.ttf'
+  id: footer_font
+  size: 14
+- file: 'fonts/Montserrat-SemiBold.ttf'
+  id: header_font
+  size: 14
+- file: 'fonts/MaterialDesignIconsDesktop.ttf'
+  id: wifi_font_20
+  size: 20
+  glyphs: [
+    # Wifi
+    "\U000F092F", # mdi-wifi-strength-outline
+    "\U000F091F", # mdi-wifi-strength-1
+    "\U000F0922", # mdi-wifi-strength-2
+    "\U000F0925", # mdi-wifi-strength-3
+    "\U000F0928", # mdi-wifi-strength-4
+    ]
+- file: 'fonts/MaterialDesignIconsDesktop.ttf'
+  id: icon_font_40
+  size: 40
+  glyphs: [
+    "\U000F0F54", # mdi-home-thermometer
+    "\U000F18D6", # mdi-sun-thermometer
+    "\U000F18D7", # mdi-sun-thermometer-outline
+    "\U000F10C2", # mdi-thermometer-high
+    "\U000F058E", # mdi-water-percent
+    "\U000F0238", # mdi-fire
+    "\U000F0425", # mdi-power
+    ]

@@ -1,7 +1,3 @@
-# esphome-config
-My ESPHome configuration &amp; documentation.
-
-
 
 https://github.com/sterin/arduino-temp-control-bot/blob/main/README.md
 https://www.aliexpress.com/item/1005004191601066.html

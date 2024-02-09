@@ -1,0 +1,47 @@
+esphome:
+  name: crono
+  friendly_name: Crono
+
+substitutions:
+  HomeName: MAM # Room Name
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+    
+# Enable logging
+logger:
+  level: VERY_VERBOSE
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret API_KEY
+
+ota:
+  password: !secret OTA_PASSWORD
+
+wifi:
+  ssid: !secret WIFI_SSID
+  password: !secret WIFI_PASSWORD
+
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.51.10
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.51.1
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "MAM-Thermostat"
+    password: "MAM-Thermostat"
+  
+  domain: .home.arpa
+  use_address: crono.home.arpa
+  #use_address: 192.168.51.10
+
+captive_portal:
+
