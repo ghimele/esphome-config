@@ -19,21 +19,40 @@ substitutions:
   display_dc_pin: GPIO7
   display_busy_pin: GPIO4
   display_reset_pin: GPIO2
+  target_temp_home: "21.5"
+  target_temp_away: "17"
+  target_temp_comfort: "22"
+  target_temp_eco: "19.5"
+  dht_pin: GPIO10
+  dht_model: DHT22
+  dht_temperature_id: "${system_name}_temperature"
+  dht_temperature_name: "${friendly_name} Temperature"
+  dht_temperature_icon: "mdi:thermometer"
+  dht_humidity_id: "${system_name}_humidity"
+  dht_humidity_name: "${friendly_name} Humidity"
+  dht_humidity_icon: "mdi:water-percent"
 
 packages:
   device: !include devices/ESPC3_Relay_X1.yaml
   debug: !include ./components/debug/debug_info.yaml
   display: !include ./components/displays/waveshare_epaper_4.20in.yaml
-
+  sensor: !include ./components/sensors/dht.yaml
 # https://esphome.io/components/esp32_ble_tracker.html?highlight=esp32_ble_tracker
 # esp32_ble_tracker: 
 
+#globals:
+  # - id: target_temp_home
+  #   type: float
+  #   restore_value: yes
+  #   initial_value: '21.5'
+
 sensor:
+
   - platform: homeassistant
     name: "External Temperature"
     entity_id: sensor.daikin_soggiorno_outside_temperature
-    id: outside_temperature  
-    
+    id: outside_temperature 
+
   - platform: homeassistant
     name: "Home Temperature"
     entity_id: sensor.crono_home_temperature
@@ -65,16 +84,16 @@ climate:
     default_preset: Home
     preset:
       - name: Home
-        default_target_temperature_low: 21
+        default_target_temperature_low: $target_temp_home
         mode: HEAT
       - name: Away
-        default_target_temperature_low: 17
+        default_target_temperature_low: $target_temp_away
         mode: HEAT
       - name: Comfort
-        default_target_temperature_low: 22
+        default_target_temperature_low: $target_temp_comfort
         mode: HEAT
       - name: Eco
-        default_target_temperature_low: 19.5
+        default_target_temperature_low: $target_temp_eco
         mode: HEAT
     # heat_mode: 
     #   then:

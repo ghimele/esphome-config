@@ -1,0 +1,8 @@
+---
+# Shutdown Button
+#
+# https://esphome.io/components/button/shutdown
+#
+platform: shutdown
+id: button_shutdown
+name: "Shutdown"

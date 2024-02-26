@@ -1,0 +1,7 @@
+---
+# Configuration Buttons
+#
+button:
+  - <<: !include ../buttons/restart.yaml
+  - <<: !include ../buttons/factory_reset.yaml
+  - <<: !include ../buttons/safe_mode.yaml
