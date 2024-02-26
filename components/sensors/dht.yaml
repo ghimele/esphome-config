@@ -1,3 +1,7 @@
+---
+# DHT Sensor
+#
+
 sensor: 
 - platform: dht
   pin: "${dht_pin}"

@@ -13,12 +13,13 @@ substitutions:
   ip_address: 192.168.51.20
   project_name: "MAM.ESPHome Crono Thermostat"
   version: 1.0.0
+  status_led_pin: GPIO02
   display_clk_pin: GPIO5
   display_mosi_pin: GPIO3
   display_cs_pin: GPIO6
   display_dc_pin: GPIO7
   display_busy_pin: GPIO4
-  display_reset_pin: GPIO2
+  display_reset_pin: GPIO1
   target_temp_home: "21.5"
   target_temp_away: "17"
   target_temp_comfort: "22"
@@ -31,6 +32,7 @@ substitutions:
   dht_humidity_id: "${system_name}_humidity"
   dht_humidity_name: "${friendly_name} Humidity"
   dht_humidity_icon: "mdi:water-percent"
+  
 
 packages:
   device: !include devices/ESPC3_Relay_X1.yaml
