@@ -1,0 +1,21 @@
+# Power Monitor Plug Oceano
+# Manufacturer: Refoss P11
+# TODO readme PMP_Oceano.md
+#
+
+substitutions:
+  environment: p # Production
+  system_name: plg01
+  friendly_name: "Plug Oceano"
+  device_description: "Power Monitor Plug Oceano. Readme via TODO"
+  ip_address: !secret EPP-PLG01_IP_ADDRESS
+  project_name: "MAM.ESPHome Power Monitor Plug"
+  version: 1.0.0
+  status_led_pin: GPIO4
+  update_interval: 10s
+  
+
+packages:
+  device: !include devices/Refoss_P11_PMP.yaml
+
+  

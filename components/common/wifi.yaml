@@ -20,13 +20,13 @@ wifi:
   ap:
     ssid: "${friendly_name} AP"
     password: "${wifi_ap_password}"
-  manual_ip:
+  #manual_ip:
     # Set this to the IP of the ESP
-    static_ip: "${ip_address}"
+  # static_ip: "${ip_address}"
     # Set this to the IP address of the router. Often ends with .1
-    gateway: 192.168.51.1
+  # gateway: 192.168.51.1
     # The subnet of the network. 255.255.255.0 works for most home networks.
-    subnet: 255.255.255.0
+  # subnet: 255.255.255.0
 
 sensor:
   - <<: !include ../sensors/wifi_signal_percentage.yaml

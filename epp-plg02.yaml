@@ -1,0 +1,19 @@
+# Power Monitor Plug for Monitor
+#
+# TODO readme PMP_Monitor.md
+#
+
+substitutions:
+  environment: p # Production
+  system_name: plg02
+  friendly_name: "Plug Monitor"
+  device_description: "Power Monitor Plug Montior. Readme via TODO"
+  ip_address: !secret EPP-PLG02_IP_ADDRESS
+  project_name: "MAM.ESPHome Power Monitor Plug"
+  version: 1.0.0
+  status_led_pin: GPIO04
+  update_interval: 10s
+  
+
+packages:
+  device: !include devices/Refoss_P11_PMP.yaml

@@ -14,10 +14,11 @@
 #
 platform: template
 id: sensor_uptime_timestamp
-name: "ESP ${friendly_name} Uptime"
+name: "Uptime"
 device_class: "timestamp"
 accuracy_decimals: 0
 update_interval: never
+entity_category: "diagnostic"
 lambda: |-
   static float timestamp = (
     id(time_homeassistant).utcnow().timestamp - id(sensor_uptime).state

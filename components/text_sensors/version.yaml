@@ -8,4 +8,4 @@
 #
 platform: version
 id: text_sensor_version
-name: "ESP ${friendly_name} Version"      
+name: "Version"      

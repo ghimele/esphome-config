@@ -4,10 +4,10 @@
 #
 # https://esphome.io/components/esphome.html
 #
-name: "esp-p${environment}-${system_name}"
+name: "ep${environment}-${system_name}"
 friendly_name: "${friendly_name}"
 comment: "${device_description}"
-build_path: "./.build/esp-p${environment}-${system_name}/"
+build_path: "./.build/ep${environment}-${system_name}/"
 project: 
   name: "${project_name}"
   version: "${version}"

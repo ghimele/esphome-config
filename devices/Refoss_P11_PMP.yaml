@@ -1,0 +1,126 @@
+# Device: Refoss P11 Power Monitoring Plug
+#
+packages:
+  <<: !include_dir_named ../components/common
+  board: !include ../boards/esp8266.yaml
+
+binary_sensor:
+  # Button 1 configuration
+  - id: button_1
+    platform: gpio
+    pin:
+      number: GPIO05
+    on_press:
+      then:
+        - switch.toggle: relay_1
+# Uncomment and test if you would like your device to reset on long press
+    on_click:
+      min_length: 5000ms
+      max_length: 10000ms
+      then:
+        - button.press: button_restart
+
+switch:
+
+  # Set relays as switches
+  - id: relay_1
+    platform: gpio
+    pin: GPIO13
+    icon: mdi:power-socket-fr
+    name: "Switch"
+    restore_mode: RESTORE_DEFAULT_ON
+    on_turn_on:
+      - switch.turn_on: sw_led1
+    on_turn_off:
+      - switch.turn_off: sw_led1
+
+  # Register LED on GPIO
+  - id: sw_led1
+    platform: gpio
+    pin:
+      number: GPIO12
+      inverted: yes
+
+uart:
+  id: cse7766_uart_bus
+  rx_pin: GPIO03
+  baud_rate: 4800
+
+sensor:
+  - platform: cse7766 # https://esphome.io/components/sensor/cse7766.html
+    #update_interval: 1s
+    uart_id: cse7766_uart_bus
+    current:
+      name: "Current"
+      unit_of_measurement: "A"
+      icon: mdi:current-ac
+      device_class: "current"
+      state_class: "measurement"
+      id: "Current"
+      filters:
+        - throttle_average: ${update_interval}
+    voltage:
+      name: "Voltage"
+      unit_of_measurement: V
+      id: "Voltage"
+      filters:
+        - skip_initial: 3
+        - throttle_average: ${update_interval}
+        - calibrate_linear:
+          - 0.0 -> 0.0
+          - 122.9 -> 232.6
+    power:
+      name: "Power"
+      id: "Power"
+      icon: mdi:flash-outline
+      unit_of_measurement: W
+      device_class: "power"
+      state_class: "measurement"
+      filters:
+        - skip_initial: 3
+        - throttle_average: ${update_interval}
+        - calibrate_linear:
+          - 0.0 -> 0.0
+          - 8.8 -> 16.8
+          #- 0.0 -> 1.0
+          #- 51.0 -> 97.0
+    energy:
+      name: "Energy"
+      id: "Energy"
+      unit_of_measurement: Wh
+      filters:
+        - throttle: ${update_interval}
+      icon: mdi:bolt
+    apparent_power:
+      name: "Apparent Power"
+      filters:
+        - throttle_average: ${update_interval}
+    power_factor:
+      name: "Power Factor"
+      filters:
+        - throttle_average: ${update_interval}
+
+  - platform: total_daily_energy
+    name: "Total Daily Energy"
+    power_id: "Power"
+    filters:
+      # Multiplication factor from W to kW is 0.001
+      - multiply: 0.001
+    unit_of_measurement: kWh
+    icon: mdi:bolt
+
+  - platform: adc
+    name: "Temperature"
+    update_interval: ${update_interval}
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+    icon: "mdi:thermometer"
+    id: temp_analog_reading
+    pin: GPIO17
+    device_class: "temperature"
+    state_class: "measurement"
+    entity_category: "diagnostic"
+    filters:
+      - calibrate_linear:
+        - 0.15 -> 18.6
+        - 0.16 -> 19.8
