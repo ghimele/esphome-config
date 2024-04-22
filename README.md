@@ -49,5 +49,6 @@ I took inspiration from this repository [jcallaghan ESPHome Configs](https://git
 ```
 
 # References 
-[jcallaghan ESPHome Configs](https://github.com/jcallaghan/esphome-config/tree/main)
-[frenck home-assistant-config](https://github.com/frenck/home-assistant-config)
+* [jcallaghan ESPHome Configs](https://github.com/jcallaghan/esphome-config/tree/main)
+
+* [frenck home-assistant-config](https://github.com/frenck/home-assistant-config)
