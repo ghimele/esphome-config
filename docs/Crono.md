@@ -1,10 +1,21 @@
 # Crono, Smart Thermostat based on ESPC3_Relay_X1 board
 
+![Front view](../assets/ESPC3_Relay_X1.png)
+
 ### Front View
 ![Front view](../assets/ESPC3_Relay_X1_Front.png)
 
 ### Rear View
 ![Rear view](../assets/ESPC3_Relay_X1_Rear.png)
+
+### Size
+![Size](../assets/ESPC3_Relay_X1_Size.png)
+
+|            |        |
+|------------|--------|
+| __Length__ | 80mm   |
+| __Width__  | 50mm   |
+| __Height__ | 20mm   |
 
 ## Description
 The AC / DC power supply esp32-c3 single circuit relay development board is equipped with esp-c3-12f old three

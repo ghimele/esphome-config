@@ -10,7 +10,7 @@ substitutions:
   system_name: crn01
   friendly_name: Crono Test
   device_description: "Crono thermostat device. Readme via TODO"
-  ip_address: 192.168.51.20
+  ip_address: !secret EPP-CRN01_IP_ADDRESS
   project_name: "MAM.ESPHome Crono Thermostat"
   version: 1.0.0
   status_led_pin: GPIO02
