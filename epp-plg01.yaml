@@ -6,7 +6,7 @@ substitutions:
   environment: p # Production
   system_name: plg01
   friendly_name: "Plug Laptop"
-  device_description: "Power Monitor Plug Laptop. Readme docs/Refoss_P11.md"
+  device_description: "Power Plug Laptop. Readme https://github.com/ghimele/esphome-config/blob/main/docs/Refoss_P11.md"
   ip_address: !secret EPP-PLG01_IP_ADDRESS
   project_name: "MAM.ESPHome Power Monitor Plug"
   version: 1.0.0
