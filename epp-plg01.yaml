@@ -1,13 +1,12 @@
-# Power Monitor Plug Oceano
+# Power Plug Laptop
 # Manufacturer: Refoss P11
-# TODO readme PMP_Oceano.md
-#
+# readme docs/Refoss_P11.md
 
 substitutions:
   environment: p # Production
   system_name: plg01
-  friendly_name: "Plug Oceano"
-  device_description: "Power Monitor Plug Oceano. Readme via TODO"
+  friendly_name: "Plug Laptop"
+  device_description: "Power Monitor Plug Laptop. Readme docs/Refoss_P11.md"
   ip_address: !secret EPP-PLG01_IP_ADDRESS
   project_name: "MAM.ESPHome Power Monitor Plug"
   version: 1.0.0

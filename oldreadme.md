@@ -2,6 +2,7 @@
 https://github.com/sterin/arduino-temp-control-bot/blob/main/README.md
 https://www.aliexpress.com/item/1005004191601066.html
 
+https://it.aliexpress.com/item/1005004323237341.html?gatewayAdapt=glo2ita
 
 
 https://templates.blakadder.com/ESP12F_Relay_X1.html
