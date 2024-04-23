@@ -16,7 +16,7 @@ ssid:
   entity_category: "diagnostic"
 bssid:
   name: "Connected BSSID"
-  entity_category: "diagnostic"     
+  entity_category: "diagnostic"
 mac_address:
   name: "Connected MAC"
   entity_category: "diagnostic"

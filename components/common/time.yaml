@@ -21,3 +21,4 @@ time:
 sensor:
   - <<: !include ../sensors/uptime.yaml
   - <<: !include ../sensors/uptime_timestamp.yaml
+  

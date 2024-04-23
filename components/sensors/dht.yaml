@@ -2,7 +2,7 @@
 # DHT Sensor
 # https://esphome.io/components/sensor/dht.html
 
-sensor: 
+sensor:
   - platform: dht
     pin: "${dht_pin}"
     temperature:

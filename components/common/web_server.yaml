@@ -17,8 +17,8 @@ web_server:
   port: 80
   # auth:
   #   username: "${web_server_username}"
-  #   password: "${web_server_password}"    
-  # use a custom web service 
+  #   password: "${web_server_password}"
+  # use a custom web service
   # check it at https://github.com/afarago/esphome-webserver/tree/ha-styling
   js_url: https://attilafarago.hu/smarthome/esphome_web_server/www.js
   local: true
