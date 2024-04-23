@@ -2,6 +2,6 @@
 # Internal Temperature Sensor
 # https://esphome.io/components/sensor/internal_temperature.html
 
-sensor: 
+sensor:
   - platform: internal_temperature
     name: "Internal Temperature"
