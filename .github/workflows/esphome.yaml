@@ -29,6 +29,7 @@ jobs:
           python-version: 3.7
       - name: Install dependencies
         run: |
+          ls -l
           python -m pip install --upgrade pip setuptools wheel
           pip install esphome
           pip list
