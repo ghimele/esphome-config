@@ -1,5 +1,6 @@
+---
 # Device: Refoss P11 Power Monitoring Plug
-#
+
 packages:
   <<: !include_dir_named ../components/common
   board: !include ../boards/esp8266.yaml
@@ -47,8 +48,7 @@ uart:
   baud_rate: 4800
 
 sensor:
-  - platform: cse7766 # https://esphome.io/components/sensor/cse7766.html
-    #update_interval: 1s
+  - platform: cse7766  # https://esphome.io/components/sensor/cse7766.html
     uart_id: cse7766_uart_bus
     current:
       name: "Current"
@@ -67,8 +67,8 @@ sensor:
         - skip_initial: 3
         - throttle_average: ${update_interval}
         - calibrate_linear:
-          - 0.0 -> 0.0
-          - 122.9 -> 232.6
+            - 0.0 -> 0.0
+            - 122.9 -> 232.6
     power:
       name: "Power"
       id: "Power"
@@ -80,10 +80,8 @@ sensor:
         - skip_initial: 3
         - throttle_average: ${update_interval}
         - calibrate_linear:
-          - 0.0 -> 0.0
-          - 8.8 -> 16.8
-          #- 0.0 -> 1.0
-          #- 51.0 -> 97.0
+            - 0.0 -> 0.0
+            - 8.8 -> 16.8
     energy:
       name: "Energy"
       id: "Energy"
@@ -122,5 +120,5 @@ sensor:
     entity_category: "diagnostic"
     filters:
       - calibrate_linear:
-        - 0.15 -> 18.6
-        - 0.16 -> 19.8
+          - 0.15 -> 18.6
+          - 0.16 -> 19.8

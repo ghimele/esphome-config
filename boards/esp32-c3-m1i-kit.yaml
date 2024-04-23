@@ -1,8 +1,10 @@
+---
+
 esphome:
   <<: !include .esphome.yaml
 
 esp32:
-  #platform: ESP32
+  # platform: ESP32
   board: esp32-c3-devkitm-1
   framework:
     type: arduino

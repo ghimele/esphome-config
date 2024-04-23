@@ -1,5 +1,6 @@
+---
 # Device: Generic ESP32 DevKit board
-#
+
 packages:
   <<: !include_dir_named ../components/common
   <<: !include_dir_named ../components/common_esp32

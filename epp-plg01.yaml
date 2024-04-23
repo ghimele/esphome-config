@@ -13,6 +13,6 @@ substitutions:
   version: 1.0.0
   status_led_pin: GPIO4
   update_interval: 10s
-  
+
 packages:
   device: !include devices/Refoss_P11_PMP.yaml

@@ -5,7 +5,7 @@
 #
 
 substitutions:
-  environment: p # Production
+  environment: p  # Production
   system_name: crn01
   friendly_name: Crono Test
   device_description: "Crono thermostat device. Readme via TODO"
@@ -43,14 +43,14 @@ sensor:
   - platform: homeassistant
     name: "External Temperature"
     entity_id: sensor.daikin_soggiorno_outside_temperature
-    id: outside_temperature 
+    id: outside_temperature
 
   - platform: homeassistant
     name: "Home Temperature"
     entity_id: sensor.crono_home_temperature
     id: home_temperature
 
-switch: 
+switch:
   - platform: gpio
     id: heater_relay
     pin: 19
@@ -87,16 +87,17 @@ climate:
       - name: Eco
         default_target_temperature_low: $target_temp_eco
         mode: HEAT
-  # heat_mode: 
+  
+  # heat_mode:
   #   then:
   #     - script.execute: update_screen
-  # off_mode: 
+  # off_mode:
   #   then:
   #     - script.execute: update_screen
 
 font: !include ./components/fonts/climate_fonts.yaml
 
-display: 
-- id: !extend eink_display
-  lambda: |-
-    it.print(10, 10, id(wifi_font_20), TextAlign::CENTER, "Ciao Ciao");
+display:
+  - id: !extend eink_display
+    lambda: |-
+      it.print(10, 10, id(wifi_font_20), TextAlign::CENTER, "Ciao Ciao");
