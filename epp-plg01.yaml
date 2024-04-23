@@ -1,9 +1,10 @@
+---
 # Power Plug Laptop
 # Manufacturer: Refoss P11
 # readme docs/Refoss_P11.md
 
 substitutions:
-  environment: p # Production
+  environment: p  # Production
   system_name: plg01
   friendly_name: "Plug Laptop"
   device_description: "Power Plug Laptop. Readme https://github.com/ghimele/esphome-config/blob/main/docs/Refoss_P11.md"
@@ -13,8 +14,5 @@ substitutions:
   status_led_pin: GPIO4
   update_interval: 10s
   
-
 packages:
   device: !include devices/Refoss_P11_PMP.yaml
-
-  

@@ -1,7 +1,6 @@
+---
 # Crono
-#
 # Crono Thermostat.
-#
 # TODO readme crono.md
 #
 
@@ -32,21 +31,12 @@ substitutions:
   dht_humidity_id: "${system_name}_humidity"
   dht_humidity_name: "${friendly_name} Humidity"
   dht_humidity_icon: "mdi:water-percent"
-  
 
 packages:
   device: !include devices/ESPC3_Relay_X1.yaml
   debug: !include ./components/debug/debug_info.yaml
   display: !include ./components/displays/waveshare_epaper_4.20in.yaml
   sensor: !include ./components/sensors/dht.yaml
-# https://esphome.io/components/esp32_ble_tracker.html?highlight=esp32_ble_tracker
-# esp32_ble_tracker: 
-
-#globals:
-  # - id: target_temp_home
-  #   type: float
-  #   restore_value: yes
-  #   initial_value: '21.5'
 
 sensor:
 
@@ -97,12 +87,12 @@ climate:
       - name: Eco
         default_target_temperature_low: $target_temp_eco
         mode: HEAT
-    # heat_mode: 
-    #   then:
-    #     - script.execute: update_screen
-    # off_mode: 
-    #   then:
-    #     - script.execute: update_screen
+  # heat_mode: 
+  #   then:
+  #     - script.execute: update_screen
+  # off_mode: 
+  #   then:
+  #     - script.execute: update_screen
 
 font: !include ./components/fonts/climate_fonts.yaml
 

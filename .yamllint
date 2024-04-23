@@ -60,7 +60,6 @@ rules:
     level: error
   new-lines:
     level: error
-    type: unix
   trailing-spaces:
     level: error
   truthy:
