@@ -3,9 +3,15 @@ name: ESPHome CI
 
 on:
   push:
+    paths-ignore:
+      - '**/README.md'
+      - 'assets/**'
+      - 'docs/**'
   pull_request:
-  schedule:
-    - cron: 0 12 * * *
+    paths-ignore:
+      - '**/README.md'
+      - 'assets/**'
+      - 'docs/**'
 
 jobs:
   yamllint:

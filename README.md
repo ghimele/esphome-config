@@ -1,4 +1,4 @@
-![alt text](assets/ESPHome.png)
+![ESPHome Logo](https://esphome.io/_images/logo-text.png)
 # Ghimele's ESPHome configuration
 
 This repository contains the various configuration files I use for the various ESPHome devices I have and use around my home.
