@@ -1,10 +1,11 @@
 ---
 # Status Sensor
 #
-# The Status Binary Sensor exposes the node state (if it’s connected to via MQTT/native API) for Home Assistant.  
+# The Status Binary Sensor exposes the node state (if it’s connected to via MQTT/native API) for Home Assistant. 
 #
 # https://esphome.io/components/binary_sensor/status.html
 #
+
 platform: status
 name: "Status"
 id: homeassistant_status

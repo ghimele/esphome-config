@@ -6,6 +6,7 @@
 #
 # https://esphome.io/components/text_sensor/wifi_info.html
 #
+
 platform: wifi_info
 ip_address:
   name: "IP Address"
@@ -14,7 +15,7 @@ ssid:
   name: "Connected SSID"
   entity_category: "diagnostic"
 bssid:
-  name: "Connected BSSID"   
+  name: "Connected BSSID"
   entity_category: "diagnostic"     
 mac_address:
   name: "Connected MAC"

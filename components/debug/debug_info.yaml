@@ -1,11 +1,12 @@
-#### DEBUG INFORMATION 
-#### to be used as package 
-#### Example
-####
-#### packages:
-####  debug: !include ./components/debug/debug_info.yaml
-####
-#### End of Example
+---
+# DEBUG INFORMATION
+# to be used as package
+# Example
+#
+# packages:
+#  debug: !include ./components/debug/debug_info.yaml
+#
+# End of Example
 
 debug:
   update_interval: 300s
@@ -17,7 +18,7 @@ text_sensor:
     reset_reason:
       name: "Reset Reason"
 
-sensor: 
+sensor:
   - platform: debug
     free:
       name: "Heap Free"

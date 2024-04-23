@@ -1,21 +1,21 @@
 ---
 # DHT Sensor
-#
+# https://esphome.io/components/sensor/dht.html
 
 sensor: 
-- platform: dht
-  pin: "${dht_pin}"
-  temperature:
-    id: "${dht_temperature_id}"
-    name: "${dht_temperature_name}"
-    device_class: "temperature"
-    state_class: "measurement"
-    icon: "${dht_temperature_icon}"
-  humidity:
-    id: "${dht_humidity_id}"
-    name: "${dht_humidity_name}"
-    device_class: "humidity"
-    state_class: "measurement"
-    icon: "${dht_humidity_icon}"
-  model: "${dht_model}"
-  update_interval: 60s
+  - platform: dht
+    pin: "${dht_pin}"
+    temperature:
+      id: "${dht_temperature_id}"
+      name: "${dht_temperature_name}"
+      device_class: "temperature"
+      state_class: "measurement"
+      icon: "${dht_temperature_icon}"
+    humidity:
+      id: "${dht_humidity_id}"
+      name: "${dht_humidity_name}"
+      device_class: "humidity"
+      state_class: "measurement"
+      icon: "${dht_humidity_icon}"
+    model: "${dht_model}"
+    update_interval: 60s

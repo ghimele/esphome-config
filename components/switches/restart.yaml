@@ -7,4 +7,4 @@
 #
 platform: restart
 id: switch_restart
-name: "Restart"    
+name: "Restart"

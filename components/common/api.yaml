@@ -2,4 +2,4 @@
 # https://esphome.io/components/api.html
 api:
   reboot_timeout: 300s
-  # password: !secret api_password
+# password: !secret api_password

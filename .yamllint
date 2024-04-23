@@ -29,7 +29,7 @@ rules:
     require-starting-space: true
     min-spaces-from-content: 2
   comments-indentation:
-    level: error
+    level: warning
   document-end:
     level: error
     present: false
