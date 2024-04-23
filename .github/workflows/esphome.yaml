@@ -29,13 +29,12 @@ jobs:
           python-version: 3.7
       - name: Install dependencies
         run: |
-          ls -l
           python -m pip install --upgrade pip setuptools wheel
           pip install esphome
           pip list
           esphome version
-      - name: Copy secrets stub into configuration folder
-        run: cp ./secrets.fake.yaml ./esphome/secrets.yaml
+      - name: Copy secrets stub into secrets
+        run: cp ./secrets.fake.yaml ./secrets.yaml
       - name: Run esphome on all files
         # yamllint disable rule:line-length
         run: |
