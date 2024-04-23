@@ -1,9 +1,10 @@
+---
 # Power Plug for Monitor
 # Manufacturer: Refoss P11
 # readme docs/Refoss_P11.md
 
 substitutions:
-  environment: p # Production
+  environment: p #Production
   system_name: plg02
   friendly_name: "Plug Monitor"
   device_description: "Power Plug Montior. Readme https://github.com/ghimele/esphome-config/blob/main/docs/Refoss_P11.md"
@@ -12,7 +13,8 @@ substitutions:
   version: 1.0.0
   status_led_pin: GPIO4
   update_interval: 10s
-  
+
 
 packages:
   device: !include devices/Refoss_P11_PMP.yaml
+  
