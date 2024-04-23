@@ -1,5 +1,14 @@
-![ESPHome Logo](https://esphome.io/_images/logo-text.png)
 # Ghimele's ESPHome configuration
+
+![Project Maintenance][maintenance-shield]
+[![License][license-shield]](LICENSE)
+
+[![GitHub Actions][actions-shield]][actionci]
+[![GitHub Activity][commits-shield]][commits]
+[![GitHub Last Commit][last-commit-shield]][commits]
+
+![ESPHome Logo](https://esphome.io/_images/logo-text.png)
+
 
 This repository contains the various configuration files I use for the various ESPHome devices I have and use around my home.
 
@@ -53,3 +62,14 @@ I took inspiration from this repository [jcallaghan ESPHome Configs](https://git
 * [jcallaghan ESPHome Configs](https://github.com/jcallaghan/esphome-config/tree/main)
 
 * [frenck home-assistant-config](https://github.com/frenck/home-assistant-config)
+
+
+[actionci]: https://github.com/ghimele/esphome-config/actions/workflows/ESPHomeCI.yaml
+[commits]: https://github.com/ghimele/esphome-config/commits/main
+
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2024?style=flat-square
+[license-shield]: https://img.shields.io/github/license/ghimele/esphome-config?style=flat-square
+
+[actions-shield]: https://img.shields.io/github/actions/workflow/status/ghimele/esphome-config/ESPHomeCI.yaml?style=flat-square&logo=github&label=EXPHome%20CI
+[last-commit-shield]: https://img.shields.io/github/last-commit/ghimele/esphome-config?style=flat-square
+[commits-shield]: https://img.shields.io/github/commit-activity/m/ghimele/esphome-config?style=flat-square
