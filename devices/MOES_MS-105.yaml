@@ -1,0 +1,53 @@
+---
+# Device: MOES MS-105 Smart Dimmer
+
+packages:
+  <<: !include_dir_named ../components/common
+  board: !include ../boards/generic-bk7231n-qfn32-tuya.yaml
+
+
+text_sensor:
+  - platform: libretiny
+    version:
+      name: LibreTiny Version
+
+uart:
+  rx_pin: RX1
+  tx_pin: TX1
+  baud_rate: 9600
+
+tuya:
+  # DPIDs processed from schema model: 0000004lra
+
+number:
+  - platform: tuya
+    number_datapoint: 3
+    name: Brightness Min
+    min_value: 10
+    max_value: 1000
+    step: 1
+  - platform: tuya
+    number_datapoint: 6
+    name: Countdown
+    min_value: 0
+    max_value: 86400
+    step: 1
+
+select:
+  - platform: tuya
+    enum_datapoint: 4
+    name: "Led Type"
+    optimistic: true
+    options:
+      0: Led
+      1: Incandescent
+      2: Halogen
+
+light:
+  - platform: tuya
+    name: "Light"
+    dimmer_datapoint: 2
+    min_value_datapoint: 3
+    switch_datapoint: 1
+    max_value: 1000
+    min_value: 10

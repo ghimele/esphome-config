@@ -3,6 +3,7 @@
 
 packages:
   <<: !include_dir_named ../components/common
+  sensor: !include ../components/sensors/status_led.yaml
   board: !include ../boards/esp8266.yaml
 
 binary_sensor:
