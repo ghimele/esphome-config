@@ -18,6 +18,7 @@ I have a number of ESPHome devices around my Smart Home and I've to provide a de
 | Device | Description | Config files | Readme |
 |--------|-------------|--------------|--------|
 | Refoss P11 | Refoss P11 Power Monitoring Plug |[epp-plg01.yaml](/epp-plg01.yaml)<br>[epp-plg02.yaml](/epp-plg01.yaml)| [Refoss P11 readme](docs/Refoss_P11.md)|
+| MOES MS-105 | MOES MS-105 Smart Dimmer |[epp-dmr01.yaml](/epp-dmr01.yaml)| [MOES MS-105 readme](docs/Moes_MS-105.md)|
 | Crono | Custom Crono Thermostat that runs the heaters on my house  |[epp-crn01.yaml](/epp-crn01.yaml)| [Crono readme](docs/Crono.md)|
 
 # Splitting up the ESPHome configuration
