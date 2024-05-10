@@ -8,6 +8,10 @@ When you initially connect the device to the power it will go in EZ Mode, you wi
 
 ![Wire Connection](<../assets/MOES-MS-105-Dimmer WireConnection.png>)
 
+> [!IMPORTANT]
+> If CloudCutter pauses after a device requests DHCP information, the device is having issues with your wireless network, or the timing of its availability. Please [check this](https://github.com/tuya-cloudcutter/tuya-cloudcutter/wiki/FAQ#my-device-gets-stuck-after-dhcp-what-can-i-do)
+
+
 this is the basic configuration I've used
 
 ```Yaml
@@ -38,7 +42,6 @@ wifi:
   ap:
     ssid: "Test Fallback Hotspot"
     password: "ELinxoUtPqYC"
-
 
 sensor:
   - platform: uptime
