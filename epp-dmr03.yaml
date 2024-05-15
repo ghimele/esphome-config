@@ -1,0 +1,17 @@
+---
+# Dimmer Kitchen
+# Manufacturer: MOES
+# readme docs/Moes_MS-105.md
+
+substitutions:
+  environment: p  # Production
+  system_name: dmr03
+  friendly_name: "Light Kitchen"
+  device_description: "MOES Dimmer. Readme https://github.com/ghimele/esphome-config/blob/main/docs/Moes_MS-105.md"
+  ip_address: !secret EPP-DMR03_IP_ADDRESS
+  project_name: "MAM.ESPHome Dimmer Light"
+  version: 1.0.0
+  update_interval: 10s
+
+packages:
+  device: !include devices/MOES_MS-105.yaml
