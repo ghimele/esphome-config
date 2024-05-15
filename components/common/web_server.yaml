@@ -18,5 +18,5 @@ web_server:
   # auth:
   #   username: "${web_server_username}"
   #   password: "${web_server_password}"
-  version: 3
+  version: "${web_server_version}"
   local: true

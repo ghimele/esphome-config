@@ -32,6 +32,7 @@ substitutions:
   dht_humidity_id: "${system_name}_humidity"
   dht_humidity_name: "${friendly_name} Humidity"
   dht_humidity_icon: "mdi:water-percent"
+  web_server_version: "3"
 
 packages:
   device: !include devices/ESPC3_Relay_X1.yaml

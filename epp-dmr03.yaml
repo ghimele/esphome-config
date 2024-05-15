@@ -12,6 +12,7 @@ substitutions:
   project_name: "MAM.ESPHome Dimmer Light"
   version: 1.0.0
   update_interval: 10s
+  web_server_version: "2"
 
 packages:
   device: !include devices/MOES_MS-105.yaml
