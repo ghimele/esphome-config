@@ -51,3 +51,4 @@ light:
     max_value: 1000
     min_value: 10
     restore_mode: RESTORE_DEFAULT_ON
+    
