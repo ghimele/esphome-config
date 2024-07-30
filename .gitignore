@@ -21,3 +21,4 @@ deps
 trash/
 test/
 secrets.yaml
+oldConfig/

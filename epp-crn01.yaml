@@ -1,61 +1,86 @@
 ---
-
-# Crono
-# Crono Thermostat.
-# TODO readme crono.md
-#
+# Crono Thermostat
+# readme docs/Crono.md
 
 substitutions:
   environment: p  # Production
   system_name: crn01
-  friendly_name: Crono Test
-  device_description: "Crono thermostat device. Readme via TODO"
+  friendly_name: Crono
+  device_description: "Crono thermostat device. Readme https://raw.githubusercontent.com/ghimele/esphome-config/main/docs/Crono.md"
   ip_address: !secret EPP-CRN01_IP_ADDRESS
   project_name: "MAM.ESPHome Crono Thermostat"
   version: 1.0.0
   status_led_pin: GPIO02
-  display_clk_pin: GPIO5
-  display_mosi_pin: GPIO3
-  display_cs_pin: GPIO6
-  display_dc_pin: GPIO7
-  display_busy_pin: GPIO4
-  display_reset_pin: GPIO1
+  display_busy_pin: GPIO25 
+  display_reset_pin: GPIO26 
+  display_dc_pin: GPIO27 
+  display_cs_pin: GPIO15 
+  display_spi_clk_pin: GPIO13  
+  display_spi_mosi_pin: GPIO14 
   target_temp_home: "21.5"
   target_temp_away: "17"
   target_temp_comfort: "22"
   target_temp_eco: "19.5"
-  dht_pin: GPIO10
-  dht_model: DHT22
-  dht_temperature_id: "${system_name}_temperature"
-  dht_temperature_name: "${friendly_name} Temperature"
-  dht_temperature_icon: "mdi:thermometer"
-  dht_humidity_id: "${system_name}_humidity"
-  dht_humidity_name: "${friendly_name} Humidity"
-  dht_humidity_icon: "mdi:water-percent"
   web_server_version: "3"
 
 packages:
-  device: !include devices/ESPC3_Relay_X1.yaml
+  device: !include devices/ESP32_e-Paper_DB.yaml
   debug: !include ./components/debug/debug_info.yaml
   display: !include ./components/displays/waveshare_epaper_4.20in.yaml
-  sensor: !include ./components/sensors/dht.yaml
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+button: 
+  - platform: template
+    name: "Display - Refresh Screen"
+    entity_category: config
+    on_press:
+      - script.execute: update_screen
 
 sensor:
 
   - platform: homeassistant
+    name: "HA Date"
+    entity_id: sensor.pretty_date
+    id: pretty_date
+    internal: true
+
+  - platform: homeassistant
     name: "External Temperature"
-    entity_id: sensor.daikin_soggiorno_outside_temperature
+    entity_id: sensor.temperatura_esterna
     id: outside_temperature
+    internal: true
 
   - platform: homeassistant
     name: "Home Temperature"
-    entity_id: sensor.crono_home_temperature
+    entity_id: sensor.temperatura_casa
     id: home_temperature
+    internal: true
 
-switch:
+  - platform: homeassistant
+    name: "Home Humidity"
+    entity_id: sensor.humidita_casa
+    id: home_humidity
+    internal: true
+
+  - platform: homeassistant
+    name: "Bedroom Temperature"
+    entity_id: sensor.th_camera_d054_temperature
+    id: bedroom_temperature
+    internal: true
+
+  - platform: homeassistant
+    name: "Bedroom Humidity"
+    entity_id: sensor.th_camera_d054_humidity
+    id: bedroom_humidity
+    internal: true
+
+switch: 
   - platform: gpio
     id: heater_relay
-    pin: 19
+    pin: 33
     name: "Relay Heater"
     restore_mode: ALWAYS_OFF
 
@@ -63,6 +88,7 @@ climate:
   - platform: thermostat
     name: "Thermostat"
     id: crono_thermostat
+    #sensor: actual_temperature
     sensor: home_temperature
     min_heating_off_time: 120s
     min_heating_run_time: 120s
@@ -90,16 +116,124 @@ climate:
         default_target_temperature_low: $target_temp_eco
         mode: HEAT
 
-  # heat_mode:
-  #   then:
-  #     - script.execute: update_screen
-  # off_mode:
-  #   then:
-  #     - script.execute: update_screen
-
 font: !include ./components/fonts/climate_fonts.yaml
 
 display:
   - id: !extend eink_display
     lambda: |-
-      it.print(10, 10, id(wifi_font_20), TextAlign::CENTER, "Ciao Ciao");
+      /* it.print(10, 10, id(main_sensor_unit), TextAlign::CENTER, "Ciao Ciao"); */
+      /* HEADER */
+      setlocale(LC_TIME, "it_IT");
+      it.strftime(10, 12, id(header_font),TextAlign::CENTER_LEFT, "%A %d %B %Y", id(homeassistant_time).now());
+      
+      /* it.printf(10,12,id(header_font),TextAlign::CENTER_LEFT,"%s",id(pretty_date).state.c_str()); */
+
+      /* WIFI SIGNAL */ 
+      if(id(sensor_wifi_signal_percentage).has_state()) {
+        int wifi_x = 385;
+        int wifi_y = 12;
+        if (id(sensor_wifi_signal_percentage).state >= 80) {
+          // Excellent
+          it.print(wifi_x, wifi_y, id(wifi_font_20), TextAlign::CENTER, "\U000F0928");
+          ESP_LOGI("WiFi", "Exellent");
+        } else if (id(sensor_wifi_signal_percentage).state  >= 60) {
+          // Good
+          it.print(wifi_x, wifi_y, id(wifi_font_20), TextAlign::CENTER, "\U000F0925");
+          ESP_LOGI("WiFi", "Good");
+        } else if (id(sensor_wifi_signal_percentage).state  >= 40) {
+          // Fair
+          it.print(wifi_x, wifi_y, id(wifi_font_20), TextAlign::CENTER, "\U000F0922");
+          ESP_LOGI("WiFi", "Fair");
+        } else if (id(sensor_wifi_signal_percentage).state  >= 20) {
+          // Weak
+          it.print(wifi_x, wifi_y, id(wifi_font_20), TextAlign::CENTER, "\U000F091F");
+          ESP_LOGI("WiFi", "Weak");
+        } else {
+          // Unlikely working signal
+          it.print(wifi_x, wifi_y, id(wifi_font_20), TextAlign::CENTER, "\U000F092F");
+          ESP_LOGI("WiFi", "Unlikely");
+        }
+      }
+
+      it.line(0, 24, 400, 24);
+      /* TEXT */
+      /* Column 1 */
+      /* Row 1 */
+      /* it.rectangle(32, 24, 84, 84); */
+      /* Thermostat status */
+      if (id(heater_relay).state){
+        it.print(32,66,id(icon_font_40), TextAlign::CENTER,"\U000F0238");
+        it.print(32,108,id(main_sensor_description), TextAlign::BOTTOM_LEFT,"Termo Accesi");
+      }
+      else{
+        it.print(32,66,id(icon_font_40), TextAlign::CENTER,"\U000F0425");
+        it.print(32,108,id(main_sensor_description), TextAlign::BOTTOM_LEFT,"Termo Spenti");
+      }
+      
+      /* Row 2 */
+      /* it.rectangle(32, 108, 84, 84); */
+      /* Home Temperature */
+      it.print(32,150,id(icon_font_40), TextAlign::CENTER,"\U000F0F54");
+      it.print(32,192,id(main_sensor_description), TextAlign::BOTTOM_LEFT,"Temp. Casa");
+
+      /* Row 3 */
+      /* it.rectangle(32, 192, 84, 84); */
+      /* Beedroom Temperature */
+      it.print(32,234,id(icon_font_40), TextAlign::CENTER,"\U000F050F");
+      it.print(32,276,id(main_sensor_description), TextAlign::BOTTOM_LEFT,"Temp. Camera");
+
+      /* Column 2 */
+      /* Row 1 */
+      /* Thermostat Target Temperature */
+      /* it.rectangle(116, 24, 84, 84); */
+      it.printf(54, 66, id(main_sensor_unit), TextAlign::CENTER_LEFT ,"%.1f°",id(crono_thermostat).target_temperature);
+
+      /* Row 2 */
+      /* it.rectangle(116, 108, 84, 84); */
+      /* Home Temperature */
+      it.printf(54, 150, id(main_sensor_unit), TextAlign::CENTER_LEFT ,"%.1f°",id(home_temperature).state);
+
+      /* Row 3 */
+      /* it.rectangle(116, 192, 84, 84); */
+      /* Bedroom Temperature */
+      it.printf(54, 234, id(main_sensor_unit), TextAlign::CENTER_LEFT ,"%.1f°",id(bedroom_temperature).state);
+
+      /* Column 3 */
+      /* Row 1 */
+      /*it.rectangle(200, 24, 84, 84);*/
+      /* Outside Temperature */
+      it.print(200,66,id(icon_font_40), TextAlign::CENTER,"\U000F18D6");
+
+      /* Row 2 */
+      /* it.rectangle(200, 108, 84, 84); */
+      /* Home Humidity */
+      it.print(200,150,id(icon_font_40), TextAlign::CENTER,"\U000F058E");
+      it.print(200,192,id(main_sensor_description), TextAlign::BOTTOM_LEFT,"Umidita Casa");
+      
+      /* Row 3 */
+      /* it.rectangle(200, 192, 84, 84); */
+      /* Bedroom Humidity */
+      it.print(200,234,id(icon_font_40), TextAlign::CENTER,"\U000F058E");
+      it.print(200,276,id(main_sensor_description), TextAlign::BOTTOM_LEFT,"Umidita Camera");
+
+      /* Column 4 */
+      /* Row 1 */
+      /*it.rectangle(284, 24, 84, 84);*/
+      /* Outside Temperature */
+      it.printf(222, 66, id(main_sensor_unit), TextAlign::CENTER_LEFT ,"%.1f°",id(outside_temperature).state);
+      it.print(200,108,id(main_sensor_description), TextAlign::BOTTOM_LEFT,"Temp. Esterna");
+
+      /* Roow 2 */
+      /* it.rectangle(284, 108, 84, 84); */
+      /* Home Humidity */
+      it.printf(222, 150, id(main_sensor_unit), TextAlign::CENTER_LEFT ,"%.0f%%",id(home_humidity).state);
+
+      /* Row 3 */
+      /* it.rectangle(284, 192, 84, 84); */
+      /* Bedroom Humidity */
+      it.printf(222, 234, id(main_sensor_unit), TextAlign::CENTER_LEFT ,"%.0f%%",id(bedroom_humidity).state);
+
+      /* FOOTER */
+      it.line(0, 276, 400, 276);
+      it.strftime(355, 288 , id(footer_font), TextAlign::CENTER_RIGHT , "Aggiornato il %d/%b/%Y %H:%M", id(homeassistant_time).now());
+

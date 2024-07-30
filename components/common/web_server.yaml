@@ -19,4 +19,5 @@ web_server:
   #   username: "${web_server_username}"
   #   password: "${web_server_password}"
   version: "${web_server_version}"
-  local: true
+  js_url: "https://oi.esphome.io/v3/www.js"
+  local: false

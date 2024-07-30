@@ -1,6 +1,6 @@
 {
     "files.associations": {
-        "*.yaml": "esphome"
+        "*.yaml": "yaml"
     },
     "files.eol": "\n" 
 }

@@ -1,42 +1,38 @@
-# Crono, Smart Thermostat based on ESPC3_Relay_X1 board
+# Crono, Smart Thermostat based on E-Paper ESP32 Driver Board
 
-![Front view](../assets/ESPC3_Relay_X1.png)
+![E-Paper_ESP32_Driver_Board](../assets/e-Paper-ESP32-Driver-Board.jpg)
 
-### Front View
-![Front view](../assets/ESPC3_Relay_X1_Front.png)
 
-### Rear View
-![Rear view](../assets/ESPC3_Relay_X1_Rear.png)
+|            |          |
+|------------|--------- |
+| __Length__ | 48.25mm  |
+| __Width__  | 29.46mm  |
 
-### Size
-![Size](../assets/ESPC3_Relay_X1_Size.png)
+[e-paper-esp32-driver-board](https://www.waveshare.com/e-paper-esp32-driver-board.htm)
 
-|            |        |
-|------------|--------|
-| __Length__ | 80mm   |
-| __Width__  | 50mm   |
-| __Height__ | 20mm   |
+[E-Paper_ESP32_Driver_Board Wiki](https://www.waveshare.com/wiki/E-Paper_ESP32_Driver_Board)
 
+[Amazon link](https://www.amazon.it/gp/product/B0BRV8M6HB/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
 ## Description
-The AC / DC power supply esp32-c3 single circuit relay development board is equipped with esp-c3-12f old three
-WiFi &amp; ble module, 1 / O port fully led out, supports AC90-250V power supply or dc7-12v power supply
-Suitable for esp32-c3 secondary development and learning, smart home wireless control and other occasions.
-Functional features
-1. Onboard mature and stable esp-c3-12f module with large capacity of 4m byte flash;
-2. The I/O port and UART program download port of esp32-c3 module are all led out to facilitate secondary development
-3. On board AC-DC and DC-DC switching power supply modules, the power supply mode supports AC90-250V/dc7-12v;
-4. En power button and io9 programmable key of onboard esp32-c3 module;
-5. Esp32-c3 supports the use of Arduino ide development tools and provides reference programs under the Arduino development environment
-6. On board 1-way 5V relay, output switch signal, suitable for controlling the load with working voltage within AC250V / dc3ov;
-7. On board power indicator, 1 programmable led and relay indicator
+This project creates a thermostat used to control the heating system of my house in addition with an e-paper display that is used to show usefull information like house temperature/humidity and if the heating system is working or not.
 
-Writing port: 
+The e-Paper ESP32 Driver Board is a wireless solution for refreshing e-Paper display content, suitable for applications such as: supermarket price tag, e-Card, serial port info monitoring, etc.
 
-GND, Rx, TX and 5V of esp32-c3 are respectively connected to GND of external TTL serial port module
-TX, Rx, 5V, io9 needs to be connected to GND when downloading, and then disconnect the connection between io9 and GND after downloading.
+## First Installation
 
-Relay output:
+To install the very first esphome firmware we need to connect the board to an usb cable and then we can use the [ESPHome Web](https://web.esphome.io/?dashboard_wizard) to prepare the device for first use or install the custom firmware we prepared.
 
-* NC: normally closed end, short circuited with com before the relay is pulled in, and suspended after it is pulled in
-* COM: public end.
-* NO: normally open, the relay is suspended before closing, and is short circuited with com after closing.
+![alt text](../assets/ESPHomeWeb01.png)
+
+![alt text](../assets/ESPHomeWeb02.png)
+
+## PIN Configuration
+
+![PIN Connection](../assets/Crono_PIN_Connection.png)
+
+As described by the image above the ESP32 is connected with the e-paper display and with the relay that will be used to control the heating system.
+
+## Final result
+Below you have the final result of this project a 4inch e-paper display that is attached to a frame and connected to the e-Paper ESP32 Driver Board.
+
+![Crono Frame](../assets/CronoFrame.jpg)

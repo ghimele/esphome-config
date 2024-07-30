@@ -1,0 +1,10 @@
+---
+
+esphome:
+  <<: !include .esphome.yaml
+
+esp32:
+  # platform: ESP32
+  board: esp32dev
+  framework:
+    type: arduino

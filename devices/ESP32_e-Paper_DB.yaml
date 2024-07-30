@@ -1,0 +1,8 @@
+---
+# Device: ESP32 e-Paper Driver Board
+
+packages:
+  <<: !include_dir_named ../components/common
+  <<: !include_dir_named ../components/common_esp32
+  sensor: !include ../components/sensors/status_led.yaml
+  board: !include ../boards/esp32dev.yaml

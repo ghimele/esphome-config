@@ -18,4 +18,4 @@ sensor:
       state_class: "measurement"
       icon: "${dht_humidity_icon}"
     model: "${dht_model}"
-    update_interval: 60s
+    update_interval: 30s

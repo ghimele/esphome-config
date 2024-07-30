@@ -1,0 +1,10 @@
+---
+# Example configuration entry
+# https://esphome.io/components/update/http_request
+# http_request:
+  # verify_ssl: false
+
+update:
+  # - platform: http_request
+  #   name: Firmware Update
+  #   source: http://example.com/manifest.json
